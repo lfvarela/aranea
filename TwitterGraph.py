@@ -1,8 +1,9 @@
 import tweepy
 from keys import *
 import networkx as nx
-import json
 import tqdm
+
+# TODO: Add followersGraph functionality
 
 class TwitterGraph():
     def __init__(self, screen_name, degrees=1, api=None, followingGraph=True, pairGraph=False):
@@ -36,10 +37,9 @@ class TwitterGraph():
 
         try:
             for page in tweepy.Cursor(self.api.friends_ids, id=user_id).pages():
-                print(len(page))
+                print('page len: {}'.format(len(page)))
                 ids.extend(page)
         except tweepy.TweepError as err:
-            # print('TweepError: {}'.format(tweepy.TweepError.response.text))
             print('TweepError: {}'.format(err))
 
         return ids
@@ -70,10 +70,10 @@ class TwitterGraph():
 
     def _computePairGraph(self):
         pairs = self._getPairs(self.nodes_by_degree[1])
-        for p in pairs:
+        for p in tqdm.tqdm(pairs):
             friendship = self.api.show_friendship(source_id=p[0], target_id=p[1])
             if(friendship[0].following or friendship[0].followed_by):
-                self.graph.add_edges_from(p)
+                self.graph.add_edge(p[0], p[1])
 
     def _computeGraph(self):
         self.graph.add_node(self.main_node_id)
@@ -81,9 +81,6 @@ class TwitterGraph():
         for d in range(self.total_degrees):
             self._addFriendsFromSet(self.nodes_by_degree[d])
         if self.pairGraph: self._computePairGraph()
-
-    def getRateLimitStatus(self):
-        print(self.api.rate_limit_status())
 
     def getGraph(self):
         print('num nodes: {}'.format(self.graph.number_of_nodes()))
