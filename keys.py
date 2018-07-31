@@ -1,4 +1,0 @@
-twitter_consumer_key = 'jeDvRugRYcNQiP2LQxTTD1SmF'
-twitter_consumer_secret = 'u3uosZMIKsSl08ZKeIUNsifC2eob3MXUj8LkiEzC0fjoH3VfCP'
-twitter_access_token = '211991256-Varn75SHKEaQAbAbvH060iFDogdgEdFRP3ikiW9E'
-twitter_access_secret = '8bmqPnfOyt195yolI8dpz6GVtzlmx9rUbEpcmveBLH4zx'

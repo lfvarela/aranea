@@ -1,1 +1,5 @@
+.gitignore
 __pycache__/
+graph.pickle
+keys.py
+.DS_Store
