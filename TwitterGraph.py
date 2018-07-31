@@ -62,15 +62,18 @@ class TwitterGraph():
 
     def _getPairs(self, s):
         s = list(s)
-        pairs = set()
+        pairs = []
         for i, node in enumerate(s):
-            new_pairs = set([(i, n) for n in s[i:]])
+            new_pairs = [(node, n) for n in s[i+1:]]
+            pairs.extend(new_pairs)
         return pairs
 
-
     def _computePairGraph(self):
-        pass
-
+        pairs = self._getPairs(self.nodes_by_degree[1])
+        for p in pairs:
+            friendship = self.api.show_friendship(source_id=p[0], target_id=p[1])
+            if(friendship[0].following or friendship[0].followed_by):
+                self.graph.add_edges_from(p)
 
     def _computeGraph(self):
         self.graph.add_node(self.main_node_id)
@@ -78,11 +81,12 @@ class TwitterGraph():
         for d in range(self.total_degrees):
             self._addFriendsFromSet(self.nodes_by_degree[d])
         if self.pairGraph: self._computePairGraph()
-        print('num nodes: {}'.format(self.graph.number_of_nodes()))
-        print('friends of main node: {}'.format(self.graph.degree[self.main_node_id]))
 
     def getRateLimitStatus(self):
         print(self.api.rate_limit_status())
 
     def getGraph(self):
+        print('num nodes: {}'.format(self.graph.number_of_nodes()))
+        print('num edges: {}'.format(self.graph.number_of_edges()))
+        print('friends of main node: {}'.format(self.graph.degree[self.main_node_id]))
         return self.graph

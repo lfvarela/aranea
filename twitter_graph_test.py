@@ -2,6 +2,7 @@ from TwitterGraph import TwitterGraph
 import pickle
 
 TG = TwitterGraph('LuisferVarela', degrees=2, pairGraph=True)
-
 graph = TG.getGraph()
-pickle.dump(graph, 'graph.pickle')
+
+with open('filename.pickle', 'wb') as f:
+    pickle.dump(graph, f)
