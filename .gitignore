@@ -1,4 +1,6 @@
 venv/
+Vpy3/
+Vpy27/
 
 *.pyc
 __pycache__/
@@ -11,7 +13,6 @@ instance/
 
 .gitignore
 backend/server/keys.py
-
 
 .pytest_cache/
 .coverage
